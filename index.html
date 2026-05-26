@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeetCode Solutions Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --surface-color: rgba(30, 41, 59, 0.7);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.4);
+            --danger: #f43f5e;
+            --success: #10b981;
+            --warning: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.15) 0px, transparent 50%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+            background-attachment: fixed;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #38bdf8, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        p.subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .search-container {
+            width: 100%;
+            max-width: 800px;
+            position: relative;
+            margin-bottom: 2rem;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1.2rem 1.5rem;
+            font-size: 1.1rem;
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            color: var(--text-primary);
+            outline: none;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .stats {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            animation: fadeIn 1.2s ease-out;
+        }
+
+        .stat-card {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            text-align: center;
+            backdrop-filter: blur(12px);
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .card {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-decoration: none;
+            color: var(--text-primary);
+            backdrop-filter: blur(12px);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            cursor: pointer;
+            animation: fadeInUp 0.5s ease-out backwards;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3), 0 0 15px var(--accent-glow);
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .badges {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            font-size: 0.8rem;
+            padding: 0.3rem 0.6rem;
+            border-radius: 6px;
+            font-weight: 600;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .badge.topic { color: #a78bfa; border-color: rgba(167, 139, 250, 0.3); }
+        .badge.lang { color: #34d399; border-color: rgba(52, 211, 153, 0.3); }
+
+        .empty-state {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            margin-top: 3rem;
+            width: 100%;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>LeetCode Solutions</h1>
+        <p class="subtitle">Your personal archive of algorithmic mastery.</p>
+    </header>
+
+    <div class="stats">
+        <div class="stat-card">
+            <div class="stat-value" id="totalCount">0</div>
+            <div class="stat-label">Total Solutions</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value" id="topicsCount">0</div>
+            <div class="stat-label">Topics Explored</div>
+        </div>
+    </div>
+
+    <div class="search-container">
+        <input type="text" id="searchInput" class="search-input" placeholder="Search by problem name, topic, or language...">
+    </div>
+
+    <div class="grid-container" id="gridContainer">
+        <!-- Cards will be injected here -->
+    </div>
+
+    <!-- Data source generated by dashboard_builder.py -->
+    <script src="index.js"></script>
+    <script>
+        const gridContainer = document.getElementById('gridContainer');
+        const searchInput = document.getElementById('searchInput');
+        const totalCountEl = document.getElementById('totalCount');
+        const topicsCountEl = document.getElementById('topicsCount');
+
+        let data = [];
+        try {
+            data = typeof problemsData !== 'undefined' ? problemsData : [];
+        } catch (e) {
+            console.error("Could not load problemsData from index.js", e);
+        }
+
+        // De-duplicate logically: problems can appear under multiple topics.
+        // We'll group by title to get unique counts.
+        const uniqueTitles = new Set(data.map(d => d.title));
+        const uniqueTopics = new Set(data.map(d => d.topic));
+
+        totalCountEl.textContent = uniqueTitles.size;
+        topicsCountEl.textContent = uniqueTopics.size;
+
+        function renderCards(filterText = "") {
+            gridContainer.innerHTML = "";
+            const lowerFilter = filterText.toLowerCase();
+
+            const filteredData = data.filter(item => {
+                return item.title.toLowerCase().includes(lowerFilter) ||
+                       item.topic.toLowerCase().includes(lowerFilter) ||
+                       item.language.toLowerCase().includes(lowerFilter);
+            });
+
+            if (filteredData.length === 0) {
+                gridContainer.innerHTML = `<div class="empty-state">No solutions found matching "${filterText}".</div>`;
+                return;
+            }
+
+            // We only show a limited amount at once to prevent massive DOM lag if user has 2000 files.
+            // A simple implementation: render first 200 matches.
+            const displayData = filteredData.slice(0, 200);
+
+            const fragment = document.createDocumentFragment();
+            displayData.forEach((item, index) => {
+                const a = document.createElement('a');
+                a.className = 'card';
+                a.href = encodeURI(item.path);
+                a.target = '_blank';
+                a.style.animationDelay = `${(index % 20) * 0.05}s`;
+
+                a.innerHTML = `
+                    <div class="card-title">${item.title}</div>
+                    <div class="badges">
+                        <span class="badge topic">${item.topic}</span>
+                        <span class="badge lang">${item.language}</span>
+                    </div>
+                `;
+                fragment.appendChild(a);
+            });
+            gridContainer.appendChild(fragment);
+        }
+
+        // Initial render
+        renderCards();
+
+        // Search event listener
+        searchInput.addEventListener('input', (e) => {
+            renderCards(e.target.value);
+        });
+    </script>
+</body>
+</html>
