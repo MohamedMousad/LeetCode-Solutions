@@ -2,7 +2,7 @@ import os
 import json
 
 def build_index():
-    base_dir = r"E:\LeetCode-Solutions"
+    base_dir = r"E:\LeetCode\LeetCode-Solutions"
     output_file = os.path.join(base_dir, "index.js")
     
     problems = []
