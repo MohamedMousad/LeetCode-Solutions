@@ -1,0 +1,40 @@
+name: Daily LeetCode Sync
+
+on:
+  schedule:
+    - cron: "0 0 * * *" # Runs every day at midnight UTC
+  workflow_dispatch: # Allows manual triggering from the GitHub Actions tab
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install Dependencies
+        run: |
+          # Install leetcode-export tool from your fork (with retry and topic tags support)
+          pip install git+https://github.com/MohamedMousad/leetcode-export.git@feature/api-retry-and-tags
+          pip install requests dataclasses_json
+
+      - name: Run LeetCode Sync Script
+        env:
+          LEETCODE_COOKIE: ${{ secrets.LEETCODE_COOKIE }}
+        run: python sync_leetcode.py
+
+      - name: Build Dashboard
+        run: python dashboard_builder.py
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "Auto-sync: Daily LeetCode solutions update" || echo "No new solutions to commit"
+          git push origin main
