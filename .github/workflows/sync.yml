@@ -2,7 +2,7 @@ name: Daily LeetCode Sync
 
 on:
   schedule:
-    - cron: "0 0 * * *" # Runs every day at midnight UTC
+    - cron: "0 */8 * * *" # Runs every 8 hours
   workflow_dispatch: # Allows manual triggering from the GitHub Actions tab
 
 jobs:
